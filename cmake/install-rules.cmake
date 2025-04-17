@@ -16,13 +16,14 @@ install(
     DIRECTORY
     include/
     "${PROJECT_BINARY_DIR}/export/"
+    "${PROJECT_BINARY_DIR}/external/"
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
     COMPONENT spark_Development
 )
 
 install(
-    TARGETS spark_spark
-    EXPORT sparkTargets
+    TARGETS spark fmt spdlog
+    EXPORT spark-targets
     RUNTIME #
     COMPONENT spark_Runtime
     LIBRARY #
@@ -34,8 +35,15 @@ install(
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
 )
 
+install(
+    FILES
+        ${PROJECT_BINARY_DIR}/source/libspark_rdict.pcm
+        ${PROJECT_BINARY_DIR}/source/libspark.rootmap
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}
+)
+
 write_basic_package_version_file(
-    "${package}ConfigVersion.cmake"
+    "${package}-config-version.cmake"
     COMPATIBILITY SameMajorVersion
 )
 
@@ -50,18 +58,18 @@ mark_as_advanced(spark_INSTALL_CMAKEDIR)
 install(
     FILES cmake/install-config.cmake
     DESTINATION "${spark_INSTALL_CMAKEDIR}"
-    RENAME "${package}Config.cmake"
+    RENAME "${package}-config.cmake"
     COMPONENT spark_Development
 )
 
 install(
-    FILES "${PROJECT_BINARY_DIR}/${package}ConfigVersion.cmake"
+    FILES "${PROJECT_BINARY_DIR}/${package}-config-version.cmake"
     DESTINATION "${spark_INSTALL_CMAKEDIR}"
     COMPONENT spark_Development
 )
 
 install(
-    EXPORT sparkTargets
+    EXPORT spark-targets
     NAMESPACE spark::
     DESTINATION "${spark_INSTALL_CMAKEDIR}"
     COMPONENT spark_Development

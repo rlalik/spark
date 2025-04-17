@@ -4,7 +4,7 @@
 
 auto main() -> int
 {
-  auto const exported = exported_class {};
+    auto const exported = exported_class {};
 
-  return std::string("spark") == exported.name() ? 0 : 1;
+    return std::string("spark") == exported.name() ? 0 : 1;
 }
