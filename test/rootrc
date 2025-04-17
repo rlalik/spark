@@ -1,0 +1,5 @@
+# Rint (interactive ROOT executable) specific alias, logon and logoff macros.
+Rint.Logon:              @PROJECT_SOURCE_DIR@/rootlogon.C
+
+X11.UseXft: yes
+Browser.Name: TRootBrowser

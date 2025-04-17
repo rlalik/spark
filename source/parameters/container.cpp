@@ -5,3 +5,12 @@
  * For the licensing terms see LICENSE file.                             *
  * For the list of contributors see README.md file.                      *
  *************************************************************************/
+
+#include "spark/parameters/container.hpp"
+
+#include <fmt/core.h>
+
+namespace spark
+{
+
+}  // namespace spark

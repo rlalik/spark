@@ -1,10 +1,10 @@
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.25)
 
 include(cmake/prelude.cmake)
 
 project(
     spark
-    VERSION 0.1.0
+    VERSION 0.1.1
     DESCRIPTION "Short description"
     HOMEPAGE_URL "https://example.com/"
     LANGUAGES CXX
@@ -13,49 +13,89 @@ project(
 include(cmake/project-is-top-level.cmake)
 include(cmake/variables.cmake)
 
+set(BUILD_SHARED_LIBS ON CACHE BOOL "Spark can be only build as shared ATM" FORCE)
+
+# ---- Dependencies ----
+
+set(FETCHCONTENT_TRY_FIND_PACKAGE_MODE OPT_IN)
+
+include(FetchContent)
+
+set(FMT_INSTALL ON)
+FetchContent_Declare(
+  fmt
+  GIT_REPOSITORY https://github.com/fmtlib/fmt
+  GIT_TAG        40626af88bd7df9a5fb80be7b25ac85b122d6c21 # v11.2.0
+  FIND_PACKAGE_ARGS 11.2.0
+)
+
+set(SPDLOG_INSTALL ON)
+set(SPDLOG_BUILD_SHARED ON)
+set(SPDLOG_FMT_EXTERNAL ON)
+FetchContent_Declare(
+  spdlog
+  GIT_REPOSITORY https://github.com/gabime/spdlog
+  GIT_TAG        6fa36017cfd5731d617e1a934f0e5ea9c4445b13 # v1.15.3
+  FIND_PACKAGE_ARGS 1.15.3
+)
+
+FetchContent_Declare(
+  magic_enum
+  GIT_REPOSITORY https://github.com/Neargye/magic_enum
+  GIT_TAG        e046b69a3736d314fad813e159b1c192eaef92cd # v0.9.7
+  # FIND_PACKAGE_ARGS
+)
+
+FetchContent_Declare(
+  alpaca
+  GIT_REPOSITORY https://github.com/p-ranav/alpaca
+  GIT_TAG        master
+  FIND_PACKAGE_ARGS 0.2.1
+)
+
+set(INDICATORS_INSTALL OFF)
+FetchContent_Declare(
+  indicators
+  GIT_REPOSITORY https://github.com/p-ranav/indicators
+  GIT_TAG        master
+  # FIND_PACKAGE_ARGS
+)
+
+block()
+  set(BUILD_SHARED_LIBS ON)
+  set(SCN_HEADERS_AS_SYSTEM ON)
+  set(SCN_USE_EXCEPTIONS ON)
+  set(SCN_INSTALL ON)
+  FetchContent_Declare(
+    scn
+    GIT_REPOSITORY https://github.com/eliaskosunen/scnlib
+    GIT_TAG        master
+    # FIND_PACKAGE_ARGS
+  )
+  FetchContent_MakeAvailable(scn)
+endblock()
+
+# This will try calling find_package() first for all dependencies
+FetchContent_MakeAvailable(fmt spdlog magic_enum alpaca indicators)
+
+# We just need a single header from the whole magic_enum
+file(COPY
+    ${magic_enum_SOURCE_DIR}/include/magic_enum/magic_enum.hpp
+  DESTINATION ${PROJECT_BINARY_DIR}/external/spark/external
+)
+
+# find ROOT
+find_package(ROOT QUIET REQUIRED COMPONENTS Core RIO ROOTNTuple Tree)
+
+configure_file(external_clang-tidy ${CMAKE_CURRENT_BINARY_DIR}/.clang-tidy)
+
+configure_file(spark_config.hpp.in ${CMAKE_CURRENT_BINARY_DIR}/export/spark/spark_config.hpp)
+
 # ---- Declare library ----
 
-add_library(
-    spark_spark
-    source/spark.cpp
-)
-add_library(spark::spark ALIAS spark_spark)
+message(STATUS "Build *spark*: ${PROJECT_VERSION}  Shared: ${BUILD_SHARED_LIBS}  Type: ${CMAKE_BUILD_TYPE}")
 
-include(GenerateExportHeader)
-generate_export_header(
-    spark_spark
-    BASE_NAME spark
-    EXPORT_FILE_NAME export/spark/spark_export.hpp
-    CUSTOM_CONTENT_FROM_VARIABLE pragma_suppress_c4251
-)
-
-if(NOT BUILD_SHARED_LIBS)
-  target_compile_definitions(spark_spark PUBLIC SPARK_STATIC_DEFINE)
-endif()
-
-set_target_properties(
-    spark_spark PROPERTIES
-    CXX_VISIBILITY_PRESET hidden
-    VISIBILITY_INLINES_HIDDEN YES
-    VERSION "${PROJECT_VERSION}"
-    SOVERSION "${PROJECT_VERSION_MAJOR}"
-    EXPORT_NAME spark
-    OUTPUT_NAME spark
-)
-
-target_include_directories(
-    spark_spark ${warning_guard}
-    PUBLIC
-    "\$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>"
-)
-
-target_include_directories(
-    spark_spark SYSTEM
-    PUBLIC
-    "\$<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/export>"
-)
-
-target_compile_features(spark_spark PUBLIC cxx_std_20)
+add_subdirectory(source)
 
 # ---- Install rules ----
 

@@ -16,13 +16,14 @@ install(
     DIRECTORY
     include/
     "${PROJECT_BINARY_DIR}/export/"
+    "${PROJECT_BINARY_DIR}/external/"
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
     COMPONENT spark_Development
 )
 
 install(
-    TARGETS spark_spark
-    EXPORT sparkTargets
+    TARGETS spark
+    EXPORT spark-targets
     RUNTIME #
     COMPONENT spark_Runtime
     LIBRARY #
@@ -34,8 +35,15 @@ install(
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
 )
 
+install(
+    FILES
+        ${PROJECT_BINARY_DIR}/source/libspark_rdict.pcm
+        ${PROJECT_BINARY_DIR}/source/libspark.rootmap
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}
+)
+
 write_basic_package_version_file(
-    "${package}ConfigVersion.cmake"
+    "${package}-config-version.cmake"
     COMPATIBILITY SameMajorVersion
 )
 
@@ -47,24 +55,42 @@ set(
 set_property(CACHE spark_INSTALL_CMAKEDIR PROPERTY TYPE PATH)
 mark_as_advanced(spark_INSTALL_CMAKEDIR)
 
+# install(
+#     FILES cmake/install-config.cmake
+#     DESTINATION "${spark_INSTALL_CMAKEDIR}"
+#     RENAME "${package}-config.cmake"
+#     COMPONENT spark_Development
+# )
+
+configure_package_config_file(${PROJECT_SOURCE_DIR}/cmake/install-config.cmake
+    ${PROJECT_BINARY_DIR}/${package}-config.cmake
+    INSTALL_DESTINATION "${spark_INSTALL_CMAKEDIR}"
+)
+
 install(
-    FILES cmake/install-config.cmake
+    FILES ${PROJECT_BINARY_DIR}/${package}-config.cmake
     DESTINATION "${spark_INSTALL_CMAKEDIR}"
-    RENAME "${package}Config.cmake"
     COMPONENT spark_Development
 )
 
 install(
-    FILES "${PROJECT_BINARY_DIR}/${package}ConfigVersion.cmake"
+    FILES "${PROJECT_BINARY_DIR}/${package}-config-version.cmake"
     DESTINATION "${spark_INSTALL_CMAKEDIR}"
     COMPONENT spark_Development
 )
 
 install(
-    EXPORT sparkTargets
+    EXPORT spark-targets
     NAMESPACE spark::
     DESTINATION "${spark_INSTALL_CMAKEDIR}"
     COMPONENT spark_Development
+)
+
+configure_file(profile.sh.in ${PROJECT_BINARY_DIR}/spark_profile.sh @ONLY)
+install(
+    FILES
+        ${PROJECT_BINARY_DIR}/spark_profile.sh
+    DESTINATION "${CMAKE_INSTALL_BINDIR}"
 )
 
 if(PROJECT_IS_TOP_LEVEL)

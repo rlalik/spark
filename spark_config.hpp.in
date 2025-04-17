@@ -1,0 +1,3 @@
+#pragma once
+
+#cmakedefine SPDLOG_USE_STD_FORMAT
