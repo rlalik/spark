@@ -1,0 +1,5 @@
+#pragma once
+
+#cmakedefine SPDLOG_FMT_EXTERNAL
+#cmakedefine SPDLOG_FMT_EXTERNAL_HO
+#cmakedefine SPDLOG_USE_STD_FORMAT

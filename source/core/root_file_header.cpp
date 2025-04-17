@@ -5,3 +5,5 @@
  * For the licensing terms see LICENSE file.                             *
  * For the list of contributors see README.md file.                      *
  *************************************************************************/
+
+#include "spark/core/root_file_header.hpp"
