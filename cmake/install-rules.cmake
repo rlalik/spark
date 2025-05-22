@@ -22,7 +22,7 @@ install(
 )
 
 install(
-    TARGETS spark fmt spdlog
+    TARGETS spark
     EXPORT spark-targets
     RUNTIME #
     COMPONENT spark_Runtime
@@ -55,10 +55,21 @@ set(
 set_property(CACHE spark_INSTALL_CMAKEDIR PROPERTY TYPE PATH)
 mark_as_advanced(spark_INSTALL_CMAKEDIR)
 
+# install(
+#     FILES cmake/install-config.cmake
+#     DESTINATION "${spark_INSTALL_CMAKEDIR}"
+#     RENAME "${package}-config.cmake"
+#     COMPONENT spark_Development
+# )
+
+configure_package_config_file(${PROJECT_SOURCE_DIR}/cmake/install-config.cmake
+    ${PROJECT_BINARY_DIR}/${package}-config.cmake
+    INSTALL_DESTINATION "${spark_INSTALL_CMAKEDIR}"
+)
+
 install(
-    FILES cmake/install-config.cmake
+    FILES ${PROJECT_BINARY_DIR}/${package}-config.cmake
     DESTINATION "${spark_INSTALL_CMAKEDIR}"
-    RENAME "${package}-config.cmake"
     COMPONENT spark_Development
 )
 

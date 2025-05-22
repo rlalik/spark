@@ -50,7 +50,7 @@ FetchContent_Declare(
   alpaca
   GIT_REPOSITORY https://github.com/p-ranav/alpaca
   GIT_TAG        master
-  # FIND_PACKAGE_ARGS
+  FIND_PACKAGE_ARGS 0.2.1
 )
 
 set(INDICATORS_INSTALL OFF)
