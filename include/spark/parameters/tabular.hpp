@@ -25,9 +25,6 @@
 #include <TNamed.h>
 #include <TObject.h>
 
-#include <fmt/format.h>
-#include <fmt/ranges.h>
-
 namespace spark
 {
 
@@ -152,7 +149,7 @@ public:
     auto print() const -> void override
     {
         for (const auto& [key, row] : records) {
-            fmt::print("{} : {}\n", key, row);
+            std::print("{} : {}\n", key, row);
         }
     }
 

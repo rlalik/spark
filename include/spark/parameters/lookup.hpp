@@ -15,6 +15,7 @@
 #include "spark/utils/data_scanner.hpp"
 
 #include <concepts>
+#include <format>
 #include <functional>
 #include <map>
 #include <stdexcept>
@@ -24,9 +25,6 @@
 
 #include <TNamed.h>
 #include <TObject.h>
-
-#include <fmt/format.h>
-#include <fmt/ranges.h>
 
 namespace spark
 {
@@ -133,12 +131,12 @@ public:
     auto get(Address addr) -> Row&
     {
         if (std::get<0>(addr) > a_max or std::get<0>(addr) < a_min) {
-            throw lookup_address_out_of_range(fmt::format(
+            throw lookup_address_out_of_range(std::format(
                 "Address {} exceeds range of {}-{} for lookup table {}", addr, a_min, a_max, TNamed::GetName()));
         }
 
         if (std::get<1>(addr) >= channels or std::get<0>(addr) < 0) {
-            throw lookup_channel_out_of_range(fmt::format(
+            throw lookup_channel_out_of_range(std::format(
                 "Address {} exceeds channel range of {}-{} for lookup table {}", addr, 0, channels, TNamed::GetName()));
         }
 
@@ -157,7 +155,7 @@ public:
     auto print() const -> void override
     {
         for (const auto& [key, row] : records) {
-            fmt::print("{} : {}\n", key, row);
+            std::print("{} : {}\n", key, row);
         }
     }
 

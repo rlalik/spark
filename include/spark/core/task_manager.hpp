@@ -16,9 +16,9 @@
 #include "spark/core/unpacker.hpp"
 #include "spark/utils/demangler.hpp"
 
+#include <format>
 #include <map>
 
-#include <fmt/ranges.h>
 #include <spdlog/spdlog.h>
 
 namespace spark
@@ -47,9 +47,7 @@ public:
             std::array<task*, sizeof...(Deps)> deps {
                 unique_tasks.at(std::hash<std::string> {}(typeid(Deps).name())).get()...};
 
-            spdlog::debug("Task '{}' has dependencies: {}",
-                          utils::cpp_demangle(typeid(Task).name()).get(),
-                          dep_names);
+            spdlog::debug("Task '{}' has dependencies: {}", utils::cpp_demangle(typeid(Task).name()).get(), dep_names);
 
             auto new_task = std::make_unique<Task>(cat_mgr, db_mgr, args...);
             // new_task->setup<Task>(); FIXME
@@ -131,20 +129,20 @@ private:
     std::map<size_t, std::vector<task*>> tasks_queue;
     std::vector<std::shared_ptr<spark::unpacker>> unpackers;
 
-    friend struct fmt::formatter<spark::task_manager>;
+    friend struct std::formatter<spark::task_manager>;
 };
 
 }  // namespace spark
 
 template<>
-struct fmt::formatter<spark::task_manager> : fmt::formatter<std::string>
+struct std::formatter<spark::task_manager> : std::formatter<std::string>
 {
     static auto format(const spark::task_manager& task_mgr, format_context& ctx) -> format_context::iterator
     {
-        fmt::format_to(ctx.out(), "Registered unpackers:\n");
+        std::format_to(ctx.out(), "Registered unpackers:\n");
         std::for_each(task_mgr.unpackers.begin(),
                       task_mgr.unpackers.end(),
-                      [&](auto& unpacker) { fmt::format_to(ctx.out(), "-> {}\n", *unpacker); });
+                      [&](auto& unpacker) { std::format_to(ctx.out(), "-> {}\n", *unpacker); });
         return ctx.out();
     }
 };

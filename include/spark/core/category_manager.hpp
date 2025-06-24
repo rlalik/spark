@@ -14,10 +14,10 @@
 #include "spark/core/detector.hpp"
 #include "spark/core/detector_manager.hpp"
 
+#include <format>
 #include <map>
 #include <memory>
 
-#include <fmt/core.h>
 #include <spdlog/spdlog.h>
 
 namespace spark
@@ -47,7 +47,7 @@ struct category_info  ///< Category info
 }  // namespace spark
 
 template<>
-struct fmt::formatter<spark::category_info> : fmt::formatter<std::string>
+struct std::formatter<spark::category_info> : std::formatter<std::string>
 {
     auto format(const spark::category_info& cinfo, format_context& ctx) const -> format_context::iterator
     {
@@ -143,7 +143,7 @@ public:
 
         auto& cinfo = cinfovec[pos];
         if (!cinfo.registered) {
-            throw std::out_of_range(fmt::format("Category with id {} not registered", pos));
+            throw std::out_of_range(std::format("Category with id {} not registered", pos));
         }
 
         cinfo.persistent = persistent;
@@ -169,7 +169,7 @@ public:
 
         auto& cinfo = cinfovec[pos];
         if (!cinfo.registered) {
-            throw std::out_of_range(fmt::format("Category with id {} not registered", pos));
+            throw std::out_of_range(std::format("Category with id {} not registered", pos));
         }
 
         cinfo.persistent = persistent;
@@ -250,11 +250,11 @@ public:
     auto print_registered() const -> void
     {
         spdlog::info("There are {} registered categories:", cinfovec.size());
-        fmt::print("  -> ");
+        std::print("  -> ");
         for (const auto& element : cinfovec) {
-            fmt::print("  {}", element.second);
+            std::print("  {}", element.second);
         }
-        fmt::print("\n");
+        std::print("\n");
     }
 
     /**
@@ -289,7 +289,7 @@ private:
     std::map<size_t, category_info> cinfovec;  ///< Category info array
     std::map<uint16_t, category*> categories;  ///< Map of categories
 
-    friend struct fmt::formatter<spark::category_info>;
+    friend struct std::formatter<spark::category_info>;
 };
 
 }  // namespace spark

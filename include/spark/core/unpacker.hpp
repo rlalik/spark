@@ -15,11 +15,10 @@
 #include <TNamed.h>
 
 #include <cstddef>
-#include <cstdint>      // for uint16_t
+#include <cstdint>
+#include <format>
 #include <istream>
-#include <sys/types.h>  // for ulong
-
-#include <fmt/format.h>
+#include <sys/types.h>
 
 namespace spark
 {
@@ -107,10 +106,10 @@ private:
 }  // namespace spark
 
 template<>
-struct fmt::formatter<spark::unpacker> : fmt::formatter<std::string>
+struct std::formatter<spark::unpacker> : std::formatter<std::string>
 {
     static auto format(const spark::unpacker& unpacker, format_context& ctx) -> format_context::iterator
     {
-        return fmt::format_to(ctx.out(), "{:32s} at {:p}", unpacker.GetName(), static_cast<const void*>(&unpacker));
+        return std::format_to(ctx.out(), "{:32s} at {:p}", unpacker.GetName(), static_cast<const void*>(&unpacker));
     }
 };

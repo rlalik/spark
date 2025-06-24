@@ -14,6 +14,7 @@
 #include "spark/utils/conversions.hpp"
 
 #include <map>
+#include <print>
 
 #include <Rtypes.h>
 #include <TObject.h>
@@ -21,9 +22,6 @@
 
 #include <alpaca/alpaca.h>
 #include <spdlog/spdlog.h>
-
-#include <fmt/core.h>
-#include <fmt/ranges.h>
 
 /**
  * \class root_file_header
@@ -44,9 +42,9 @@ struct root_file_header : public TObject
         auto bytes_written = alpaca::serialize(entries, serialized_categories);
 
         for (const auto& entry : entries) {
-            fmt::print("{} = {}\n", entry.second, magic_enum::enum_integer(entry.first));
+            std::print("{} = {}\n", entry.second, magic_enum::enum_integer(entry.first));
         }
-        fmt::print("serialized {} bytes -> {}\n", bytes_written, serialized_categories);
+        std::print("serialized {} bytes -> {}\n", bytes_written, serialized_categories);
     }
 
     template<typename ECategories>

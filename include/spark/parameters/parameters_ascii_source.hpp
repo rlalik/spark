@@ -16,6 +16,7 @@
 #include <fstream>
 #include <map>
 #include <memory>
+#include <print>
 #include <string>
 
 #include <spdlog/spdlog.h>
@@ -44,9 +45,9 @@ struct SPARK_EXPORT container_dump
      */
     auto print(std::string name = std::string()) const -> void
     {
-        fmt::println("Container Table [{}]", name);
+        std::println("Container Table [{}]", name);
         for (auto line : lines) {
-            fmt::println("{}", line);
+            std::println("{}", line);
         }
     }
 };

@@ -8,11 +8,9 @@
 
 #pragma once
 
+#include <format>
 #include <stdexcept>
 #include <string_view>
-
-#include <fmt/core.h>
-#include <fmt/format.h>
 
 namespace spark
 {
@@ -21,7 +19,7 @@ class container_invalid_type : public std::runtime_error
 {
 public:
     explicit container_invalid_type(std::string_view name)
-        : std::runtime_error(fmt::format("Requested [{}] container to be of another type than existing", name))
+        : std::runtime_error(std::format("Requested [{}] container to be of another type than existing", name))
     {
     }
 };
@@ -30,7 +28,7 @@ class container_missing_in_source : public std::runtime_error
 {
 public:
     explicit container_missing_in_source(std::string_view name)
-        : std::runtime_error(fmt::format("Error finding container [{}] in any source", name))
+        : std::runtime_error(std::format("Error finding container [{}] in any source", name))
     {
     }
 };
@@ -39,7 +37,7 @@ class container_parsing_error : public std::runtime_error
 {
 public:
     explicit container_parsing_error(std::string_view name)
-        : std::runtime_error(fmt::format("Error parsing ASCII container for [{}]", name))
+        : std::runtime_error(std::format("Error parsing ASCII container for [{}]", name))
     {
     }
 };
@@ -50,7 +48,7 @@ public:
     explicit container_registration_error(std::string_view name,
                                           std::string_view registered_name,
                                           std::string_view requested_name)
-        : std::runtime_error(fmt::format("The container registsred for name [{}] was of type {}, requested type {}",
+        : std::runtime_error(std::format("The container registsred for name [{}] was of type {}, requested type {}",
                                          name,
                                          registered_name,
                                          requested_name))
