@@ -135,8 +135,7 @@ auto category_internals::compress() -> void
 
 category::category(TClass* tclass, std::initializer_list<size_t> sizes, bool simulation)
 {
-    spdlog::debug(
-        "Construct category {} with class {} with sizes {}", header.name, tclass->GetName(), fmt::join(sizes, ","));
+    spdlog::debug("Construct category {} with class {} with sizes {}", header.name, tclass->GetName(), sizes);
     header.clear();
     details::setup_header(header, tclass->GetName(), sizes, simulation);
     data = new TClonesArray(tclass, types::size_t2int(header.data_size));

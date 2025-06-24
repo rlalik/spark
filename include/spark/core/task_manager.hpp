@@ -49,7 +49,7 @@ public:
 
             spdlog::debug("Task '{}' has dependencies: {}",
                           utils::cpp_demangle(typeid(Task).name()).get(),
-                          fmt::join(dep_names, ","));
+                          dep_names);
 
             auto new_task = std::make_unique<Task>(cat_mgr, db_mgr, args...);
             // new_task->setup<Task>(); FIXME
@@ -67,7 +67,7 @@ public:
         } catch (std::out_of_range& e) {
             spdlog::critical("Some of the '{}' task dependencies: {} are not found",
                              utils::cpp_demangle(typeid(Task).name()).get(),
-                             fmt::join(dep_names, ","));
+                             dep_names);
             throw e;
         }
     }
