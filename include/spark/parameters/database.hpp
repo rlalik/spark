@@ -71,8 +71,8 @@ public:
     /*
      * Register container with given name.
      *
-     * First, it checks whetehr given name is already registered. If not, creates object of T with given args.
-     * If yes, it checks whether the already registered object is of the sme type as requested. It throws if check
+     * First, it checks whether given name is already registered. If not, creates object of T with given args.
+     * If yes, it checks whether the already registered object is of the same type as requested. It throws if check
      * fails.
      *
      * \param name container name

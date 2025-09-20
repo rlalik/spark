@@ -135,13 +135,13 @@ auto tree::process_data(uint64_t entries, bool /*show_progress_bar*/) -> void
             flag = source->read_current_event();
             if (!flag) {
                 spdlog::info("Source could not read more events, finished at {}", event_count);
-                // break;
+                break;
             }
         }
 
         if (!flag) {
             spdlog::info("Flag not valid, finished at {}", event_count);
-            // break;
+            break;
         }
 
         tasks().execute_tasks();
