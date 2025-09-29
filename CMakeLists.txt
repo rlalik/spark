@@ -90,9 +90,9 @@ file(COPY
 # find ROOT
 find_package(ROOT QUIET REQUIRED COMPONENTS Core RIO ROOTNTuple Tree)
 
-configure_file(external_clang-tidy ${CMAKE_CURRENT_BINARY_DIR}/.clang-tidy)
+configure_file(templates/external_clang-tidy ${CMAKE_CURRENT_BINARY_DIR}/.clang-tidy)
 
-configure_file(spark_config.hpp.in ${CMAKE_CURRENT_BINARY_DIR}/export/spark/spark_config.hpp)
+configure_file(templates/spark_config.hpp.in ${CMAKE_CURRENT_BINARY_DIR}/export/spark/spark_config.hpp)
 
 # ---- Declare library ----
 

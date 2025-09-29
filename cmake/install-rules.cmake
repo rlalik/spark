@@ -9,6 +9,11 @@ endif()
 include(CMakePackageConfigHelpers)
 include(GNUInstallDirs)
 
+set(SPARK_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX} CACHE INTERNAL "")
+set(SPARK_INSTALL_BINDIR ${CMAKE_INSTALL_FULL_BINDIR} CACHE INTERNAL "")
+set(SPARK_INSTALL_LIBDIR ${CMAKE_INSTALL_FULL_LIBDIR} CACHE INTERNAL "")
+set(SPARK_INSTALL_INCDIR ${CMAKE_INSTALL_FULL_INCLUDEDIR} CACHE INTERNAL "")
+
 # find_package(<package>) call for consumers to find this project
 set(package spark)
 
@@ -86,7 +91,7 @@ install(
     COMPONENT spark_Development
 )
 
-configure_file(profile.sh.in ${PROJECT_BINARY_DIR}/spark_profile.sh @ONLY)
+configure_file(templates/profile.sh.in ${PROJECT_BINARY_DIR}/spark_profile.sh @ONLY)
 install(
     FILES
         ${PROJECT_BINARY_DIR}/spark_profile.sh
