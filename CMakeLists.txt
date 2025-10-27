@@ -38,8 +38,8 @@ set(SPDLOG_FMT_EXTERNAL_HO OFF)
 FetchContent_Declare(
   spdlog
   GIT_REPOSITORY https://github.com/gabime/spdlog
-  GIT_TAG        6fa36017cfd5731d617e1a934f0e5ea9c4445b13 # v1.15.3
-  FIND_PACKAGE_ARGS 1.15.3
+  GIT_TAG        486b55554f11c9cccc913e11a87085b2a91f706f # v1.16.0
+  # FIND_PACKAGE_ARGS 1.16.0
 )
 
 FetchContent_Declare(

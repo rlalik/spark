@@ -41,10 +41,10 @@ struct root_file_header : public TObject
         constexpr auto entries = magic_enum::enum_entries<ECategories>();
         auto bytes_written = alpaca::serialize(entries, serialized_categories);
 
-        for (const auto& entry : entries) {
-            std::print("{} = {}\n", entry.second, magic_enum::enum_integer(entry.first));
-        }
-        std::print("serialized {} bytes -> {}\n", bytes_written, serialized_categories);
+        // for (const auto& entry : entries) {
+        //     std::print("{} = {}\n", entry.second, magic_enum::enum_integer(entry.first));
+        // }
+        // std::print("serialized {} bytes -> {}\n", bytes_written, serialized_categories);
     }
 
     template<typename ECategories>

@@ -159,7 +159,7 @@ public:
      * Returns number of entries in the current tree.
      * \return number of entries
      */
-    auto get_entries() -> Long64_t
+    auto get_entries() const -> Long64_t
     {
         // if (!input_tree) { FIXME
         //     spdlog::warn("[Warning] in spark: no input tree is opened. Cannot get any entry.");
@@ -167,6 +167,11 @@ public:
         // }
 
         // no_entries = input_tree->GetEntries();
+
+        if (no_entries == -1) {
+            throw std::runtime_error("No input file");
+        }
+
         return no_entries;
     }
 
@@ -217,7 +222,7 @@ public:
 
         for (auto cat : categories) {
             auto& cat_info = model().get_category_info(cat);
-            spdlog::info("Read category {:s}\n", cat_info.name);
+            spdlog::info("Read category {:s}", cat_info.name);
 
             TBranch* br = input_tree->GetBranch(Form("%s", cat_info.name.c_str()));  // FIXME add .
             if (!br) {
